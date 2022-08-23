@@ -1,0 +1,37 @@
+.chat-main {
+  display: flex;
+  padding: 30px;
+}
+
+.chat-left {
+  width: 200px;
+}
+
+.chat-left li {
+  width: 200px;
+  cursor: pointer;
+}
+
+.chat-left li.active {
+  color: red;
+}
+
+.chat-right {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+}
+
+.message-send-box {
+  padding: 50px 0;
+}
+
+.message-send-box textarea {
+  height: 100px;
+}
+
+.message-view-box {
+  height: 200px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
