@@ -10,7 +10,7 @@ services:
     volumes:
       - ./server/activemq/data:/data/activemq
 
-  rebis:
+  redis:
     image: redis:7.0.4-alpine
     restart: on-failure
     ports:

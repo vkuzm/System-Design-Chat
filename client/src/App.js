@@ -58,15 +58,35 @@ const App = () => {
       }
 
       ws.current.onmessage = ({ data }) => {
-        const message = JSON.parse(data);
+        const responseMessage = JSON.parse(data);
+        if (!responseMessage) {
+          return;
+        }
 
-        if (message) {
-          const cachedMessages = getCachedMessages(message.chatId);
-          const messages = [...cachedMessages, message];
+        if (responseMessage.operation === 'MESSAGE') {
+          const cachedMessages = getCachedMessages(responseMessage.chatId);
+          const messages = [...cachedMessages, responseMessage];
 
-          saveMessagesToCache(message.chatId, messages);
+          saveMessagesToCache(responseMessage.chatId, messages);
           setMessages(messages);
           scrollChatToRecent();
+          console.log('MESSAGE', responseMessage);
+        }
+
+        if (responseMessage.operation === 'UPDATE') {
+          responseMessage.messages.forEach((message) => {
+            const cachedMessages = getCachedMessages(message.receiverId)
+              .filter((cachedMessage) => message.messageId !== cachedMessage.messageId);
+
+            saveMessagesToCache(message.receiverId, [...cachedMessages, message]);
+          });
+
+          scrollChatToRecent();
+          console.log('UPDATE', responseMessage);
+        }
+
+        if (responseMessage.operation === 'DELIVERY') {
+          console.log('DELIVERY', responseMessage);
         }
       }
     }
